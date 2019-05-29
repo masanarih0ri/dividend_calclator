@@ -1,35 +1,59 @@
 <template>
   <div class="calculate_section">
     <h1>配当金計算アプリ</h1>
+
+    <v-container
+    id="input-usage"
+    grid-list-xl
+    fluid
+  >
+    <v-layout wrap>
+      <v-flex xs12>
+        <v-input
+          :messages="['Messages']"
+          append-icon="close"
+          prepend-icon="phone"
+        >
+          Default Slot
+        </v-input>
+      </v-flex>
+    </v-layout>
+  </v-container>
+
+
+
     <div class="">
-      <label for="stock_price">株価</label>
-      <input v-model="stock_price" placeholder="現在の株価を入力してください">
+      <label for="stock_price">現在株価</label>
+      <!-- .numberがなければ文字列として認識してしまう -->
+      <input class="" type="number" v-model.number="stock_price" placeholder="現在の株価を入力してください">円
     </div>
     <div class="">
       <label for="earnings_per_share">1株あたり配当金</label>
-      <input v-model="earnings_per_share" placeholder="1株あたり配当金を入力してください">
+      <input type="number" v-model.number="earnings_per_share" placeholder="1株あたり配当金を入力してください">円
     </div>
     <p>年間配当利回り:{{ dividendYieldCalculate }} %</p>
     <div class="">
-      <label for="">購入株数</label>
-      <input v-model="number_of_shares" placeholder="購入したい株数を入力してください">
+      <label for="number_of_shares">購入株数</label>
+      <input type="number" v-model.number="number_of_shares" placeholder="購入したい株数を入力してください">株
     </div>
     <div class="">
-      <label for="">運用する年数</label>
-      <input v-model="number_of_years" placeholder="運用する年数を入力してください">
+      <label for="number_of_years">運用する年数</label>
+      <input type="number" v-model.number="number_of_years" placeholder="運用する年数を入力してください">年
     </div>
-    <table>
-      <tr>
-        <th></th>
-        <td>購入金額</td>
-        <td>{{ number_of_years }}年後の金額</td>
-      </tr>
-      <tr>
-        <th>{{ number_of_years }}年目</th>
-        <td>{{amountOfShare}}</td>
-        <td>{{ Math.round(amountOfShare * Math.pow(hoge, number_of_years)) }}</td>
-      </tr>
-    </table>
+    <div class="">
+      <p>{{ number_of_years }}年後には、{{ amountOfShare }}円が{{ totalAmountOfMoney }}円となります。</p>
+      <p>ここから下に利回り計算後の表が出ます。</p>
+      <table>
+        <tr>
+          <th></th>
+          <td>利回り計算後の金額</td>
+        </tr>
+        <tr v-for="number_of_year in number_of_years">
+          <th>{{ number_of_year }}年後</th>
+          <td>{{ Math.round(amountOfShare * Math.pow(rateOfIncrease, number_of_year)) }}円</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -38,10 +62,10 @@ export default {
   name: 'AssetManagementCalculate',
   data () {
     return {
-      stock_price: '',
-      earnings_per_share: '',
-      number_of_shares: '',
-      number_of_years: ''
+      stock_price: null,
+      earnings_per_share: null,
+      number_of_shares: null,
+      number_of_years: null
     }
   },
 
@@ -57,8 +81,12 @@ export default {
       return this.stock_price * this.number_of_shares
     },
 
-    hoge: function() {
+    rateOfIncrease: function() {
       return 1 + this.dividendYieldCalculate / 100
+    },
+
+    totalAmountOfMoney: function() {
+      return Math.round(this.amountOfShare * Math.pow(this.rateOfIncrease, this.number_of_years))
     }
   }
 }
