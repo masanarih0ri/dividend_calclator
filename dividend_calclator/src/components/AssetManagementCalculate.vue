@@ -43,14 +43,23 @@
       -->
       <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="hoge"
         class="elevation-1"
       >
-        <template v-slot:items="props">
+      <!-- プロパティを受け取る名前付きのスロット -->
+      <!-- propertyの部分は何の文字列でもよくて、ただの名前（仮引数のようなもの） -->
+      <!-- <h3 slot="title">レッサーパンダ</h3> slotは2.5までの書き方 -->
+      <!-- <h3 v-slot:title>レッサーパンダ</h3> v-slotは2.6以降の書き方-->
+      <!-- すべてのスロットプロパティを保持するオブジェクトの名前をpropertyとしている。つまりpropertyはオブジェクトである -->
+        <template v-slot:items="property">
           <tr v-for="number_of_year in number_of_years">
             <th>{{ number_of_year }}年後</th>
             <td>{{ Math.round(amountOfShare * Math.pow(rateOfIncrease, number_of_year)) }}円</td>
           </tr>
+          <!-- <tr v-for="number_of_year in number_of_years> -->
+            <!-- <th>{{ number_of_year }}</th>
+            <td>{{property.item.calories}}</td> -->
+          <!-- </tr> -->
         </template>
       </v-data-table>
     </div>
@@ -180,7 +189,7 @@ export default {
           sortable: false
         }
       ],
-      desserts: [
+      hoge: [
         {
           name: 'Donut',
           calories: 518,
