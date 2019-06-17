@@ -3,6 +3,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
 import AssetManagementCalculate from '@/components/AssetManagementCalculate'
+import ApplicationDescription from '@/components/ApplicationDescription'
 
 Vue.use(Router)
 
@@ -14,7 +15,10 @@ export default new Router({
     {
       path: '/',
       name: 'AssetManagementCalculate',
-      component: AssetManagementCalculate
+      components:{
+        default: AssetManagementCalculate,
+        applicationDescription: ApplicationDescription  
+      }
     }
   ]
 })

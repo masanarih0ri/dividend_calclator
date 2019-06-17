@@ -11,7 +11,8 @@
       </v-toolbar-items>
     </v-toolbar>
     <!-- router-viewによって、それぞれのパスごとのviewを表示する -->
-    <router-view/>
+    <router-view name="applicationDescription"></router-view>
+    <router-view></router-view>
     <v-footer class="pa-3">
       <v-spacer></v-spacer>
       <div>&copy; {{ new Date().getFullYear() }} Masanari Hori</div>
